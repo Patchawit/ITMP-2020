@@ -8,20 +8,22 @@
 </head>
 <body class="paper">
 	<div id="app">
-		<input type="num" v-model="number">
+		<input type="number" v-model="number">
+		<input type="number" v-model="row ">
 		<div class="space"></div>
 		<h3>สูตรคูณแม่ {{number}}</h3>
-		<h4
-			v-for="i in 12"
+		<h4 class="row"
+			v-for="i in r"
 			>{{number}} x {{i}} = {{multiply(i)}}</h4>
-
+		<h3>ผลรวม {{sum}}</h3>
 	</div>
 
 	<script>
 		let app = new Vue({
 			el: '#app',
 			data: {
-				number: 2
+				number: 2,
+				row:12
 			},
 			methods: {
 				multiply: function(row){
@@ -29,6 +31,16 @@
 				}
 			},
 			computed: {
+				r:function(){
+					return parseInt(this.row)
+				},
+				sum:function(){
+					let sum = 0
+					for (var i = 1; i <= this.r; i++) {
+						sum = sum + (this.multiply(i))
+					}
+					return sum
+				},
 				x2: function(){
 					return this.number*2
 				},
