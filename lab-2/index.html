@@ -15,8 +15,16 @@
 		<h3>website {{person.website}}</h3>
 		<h3>company {{person.company.name}}</h3>
 
+		<button @click="isthisgood">yes or no</button>
+		<h2>{{yesno.answer}}</h2>
+		<img :src="yesno.image" alt="">
+
+
 		Users
-		<h2 v-for="u in users" :data-id="u.id" @click="viewBio(u)">{{u.username}}</h2>
+		<h2 v-for="u in users" :data-id="u.id" @click="viewBio(u)">
+			<img :src="`https://picsum.photos/id/3${u.id}/200/300`" alt="">
+			{{u.username}}
+		</h2>
 	</div>
 	
 
@@ -33,10 +41,28 @@
 			el: '#app',
 			methods:{
 				viewBio: function(user){
-					this.person = user
+					this.person = user 
+					this.yesno = {
+						"answer":"คลิก",
+						"forced":false,
+						"image":""	
+					}					
+				},
+				isthisgood: function(){
+					fetch('https://yesno.wtf/api')
+					.then(response => response.json())
+					.then(json => {
+						console.log(json)
+						app.yesno = json
+					})
 				}
 			},
 			data: {
+				yesno:{
+					"answer":"คลิก",
+					"forced":false,
+					"image":""
+				},			
 				person:{
 						id:0,
 						name:'..loading',
