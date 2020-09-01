@@ -22,7 +22,7 @@
 				'--l':l+'%',
 			}"
 				:data-pick="i == pick"
-				@click="check(i)"
+				@click="check(i == pick)"
 				></a-dot>
 			</main>
 		</section>
@@ -34,7 +34,7 @@
 	</div>
 
 	<script>
-		let picklight = "80%" //เลือกว่ารอบนี้ อันพิเศษจะมีความสว่าง 20%
+		let picklight = "80%" //เลือกว่ารอบนี้ อันพิเศษจะมีความสว่าง 80%
 
 		function rand(start,stop){//สร้างฟังก์ชัน random ไว้ใช้
 			let shift = (stop-start)+1
@@ -44,16 +44,32 @@
 		let app = new Vue({
 			el:'#canvas',
 			data:{
-				row:3, //จำนวนแถวที่จะมีในรอบนี้
-				h:200, // hue ในรอบนี้
-				time:20, //เวลาเริ่มต้น
+				row:2, //จำนวนแถวที่จะมีในรอบนี้
+				h:120, // hue ในรอบนี้
+				time:30, //เวลาเริ่มต้น
 				score:0, //คะแนนเริ่มต้น
 				pick:1, //หมายเลขวงกลมที่จะสีแตกต่างจากก้อนอื่นๆ
 				l:70,//ความสว่างของสีทั่วไปในรอบนี้
 			},
 			methods: {
-				check: function(i){
-					console.log(i)
+				check: function(e){
+					if(this.time > 0){
+						if(e){
+							this.score ++
+							this.correct()
+						}else{
+							this.score --
+							this.time --
+						}
+					}
+					console.log(e)
+				},
+				correct: function(){
+					this.row = rand(2,6)
+					this.pick = rand(1,this.row*this.row)
+					this.h = rand(0,360)
+					document.querySelector('#canvas').style.setProperty('--picklight',picklight);
+					console.log('Correct')
 				}
 			}
 		})
